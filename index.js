@@ -1,15 +1,19 @@
 var http = require("http"); 
+var fs = require("fs");
 http.createServer(function(req,res) {
-	console.log(req)
   var path = req.url.toLowerCase();
   switch(path) {
     case '/':
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end('Home page');
+      fs.readFile('public/home.html', function(err, data) {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(data);
+      });
       break;
     case '/about':
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end('About page');
+      fs.readFile('public/about.html', function(err, data) {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(data);
+      });
       break;
     default:
       res.writeHead(404, {'Content-Type': 'text/plain'});
