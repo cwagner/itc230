@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/cwagner/itc230/issues"
   },
-  "homepage": "https://github.com/cwagner/itc230#readme"
+  "homepage": "https://github.com/cwagner/itc230#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
