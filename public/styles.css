@@ -1,0 +1,32 @@
+html {
+	background-color:#ccc;
+}
+
+div.wrapper {
+	background-color: #fff;
+    width:80%;
+    margin:auto;
+    overflow:auto;
+}
+
+h1 {
+	text-align: center;
+}
+
+form {
+	padding: 1em;
+	text-align: center;
+}
+
+h2, p {
+	padding: 1em;
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+a:hover {
+	color: #777;
+}
