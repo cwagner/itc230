@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Gear List | Delete</title>
+    <meta name="robots" content ="noindex,nofollow">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="wrapper">
+		<h1><a href='/'>Gear List</a></h1>
+		<h2>Delete Gear #{{id}}</h2>
+		{{#if result}} 
+			<p>Item #{{result.id}} deleted<br/>
+			Remaining number of items: {{items}}</p>
+		{{else}}
+			<p>not found<br/>
+			Remaining number of items: {{items}}</p>
+		{{/if}}
+	</div>
+</body>
+</html>
