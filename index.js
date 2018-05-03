@@ -1,7 +1,4 @@
-const http = require("http"); 
-const fs = require("fs");
 const gear = require('./lib/gear_list.js');
-const querystring = require('querystring');
 const express = require("express");
 const app = express();
 
@@ -33,7 +30,7 @@ app.get('/get', (req, res) => {
   else {
     res.type('text/plain');
     res.send('Item not found');
-  };
+  }
 });
 
 app.get('/delete', (req, res) => {
