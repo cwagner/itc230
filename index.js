@@ -1,6 +1,8 @@
-const gear = require('./lib/gear_list.js');
+//const gear = require('./lib/gear_list.js');
 const express = require("express");
 const app = express();
+const gearMethods = require('./lib/gearMethods');
+const Gear = require('./models/gear');
 
 let handlebars = require("express-handlebars");
 app.engine(".html", handlebars({extname: '.html'}));
@@ -11,8 +13,11 @@ app.use(express.static(__dirname + '/public')); // set location for static files
 app.use(require("body-parser").urlencoded({extended: true})); // parse form submissions
 
 app.get('/', (req, res) => {
-  res.type('text/html');
-  res.render('home', {gear: gear.getAll()});
+  gearMethods.getAll().then((items) => {
+    res.render('home', {gear: items});
+  }).catch((err) =>{
+    return next(err);
+  });
 });
 
 app.get('/about', (req, res) => {
@@ -20,29 +25,25 @@ app.get('/about', (req, res) => {
   res.sendFile(__dirname + '/public/about.html');
 });
 
-app.get('/get', (req, res) => {
-  const getid = req.query.id;
-  const getresult = gear.get(getid);
-  if (getresult) {
-    res.type('text/plain');
-    res.send('Searching for id #' + getid + ':' + '\n' + JSON.stringify(getresult));
-  }
-  else {
-    res.type('text/plain');
-    res.send('Item not found');
-  }
-});
-
 app.get('/delete', (req, res) => {
-  const delid = req.query.id;
-  const delresult = gear.delete(delid);
-  res.render('delete', {result: delresult, items: gear.getAll().length, id: delid});
+  const id = req.query.id;
+  gearMethods.delete(id).then((result) => {
+    Gear.count((err, count) => {
+      if(err) return next(err);
+      res.render('delete', {result: result.n, items: count, id: id});
+    });
+  }).catch((err) => {
+    return next(err);
+  });
 });
 
 app.get('/details', (req, res) => {
-  let result = gear.get(req.query.id);
-  res.render('details', {result: result});
-})
+  gearMethods.get(req.query.id).then((item) => {
+    res.render('details', {result: item});
+  }).catch((err) => {
+    return next(err);
+  });
+});
 
 app.use( (req, res) => {
   res.type('text/plain');
