@@ -9,6 +9,16 @@ div.wrapper {
     overflow:auto;
 }
 
+div#item-list {
+	float:left;
+	width: 50%;
+}
+
+div#item-details {
+	float:right;
+	width: 50%;
+}
+
 h1 {
 	text-align: center;
 }
@@ -16,6 +26,10 @@ h1 {
 form {
 	padding: 1em;
 	text-align: center;
+}
+
+input[type="text"] {
+	display:block;
 }
 
 h2, p {

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Gear List | Home</title>
+    <meta name="robots" content ="noindex,nofollow">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="wrapper">
+		<h1><a href='/'>Gear List</a></h1>
+		<form action='/details'>
+			Gear ID #:
+			<input type='text' name='id'>
+		</form>
+		<ul>
+		{{#each gear}}
+		<li><a href='/details?id={{this.id}}'>Gear ID #{{this.id}}</a></li>
+		{{/each}}
+	</div>
+</body>
+</html>

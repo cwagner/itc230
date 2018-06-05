@@ -15,7 +15,7 @@ app.use('/api', require('cors')());
 
 app.get('/', (req, res) => {
   gearMethods.getAll().then((items) => {
-    res.render('home', {gear: items});
+    res.render('home', {gear: JSON.stringify(items)});
   }).catch((err) =>{
     return next(err);
   });
