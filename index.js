@@ -65,10 +65,9 @@ app.get('/api/item/:id', (req, res, next) => {
 });
 
 app.get('/api/item/delete/:id', (req, res, next) => {
-  gearMethods.delete(req.params.id).then((result) => {
+  gearMethods.delete(req.params.id, res).then((result) => {
     Gear.count((err, count) => {
       if (err) return next(err);
-      console.log(result);
       res.json({deletedCount: result.n, items: count, id: req.params.id});
     });
   }).catch((err) => {
@@ -77,12 +76,22 @@ app.get('/api/item/delete/:id', (req, res, next) => {
 });
 
 app.post('/api/add', (req, res, next) => {
-  gearMethods.add({id:req.body.id, category:req.body.category, make:req.body.make, model:req.body.model, serialnumber:req.body.serialnumber
-  }).then((result) => {
+  if (!req.body._id) {
+    gearMethods.add({id:req.body.id, category:req.body.category, make:req.body.make, model:req.body.model, serialnumber:req.body.serialnumber}
+    ).then((result) => {
     res.json(result);
-  }).catch((err) => {
+    }).catch((err) => {
     return next(err);
   });
+  } else {
+    gearMethods.update(req.body._id, {id:req.body.id, category:req.body.category, make:req.body.make, model:req.body.model, serialnumber:req.body.serialnumber}
+      ).then((result) => {
+        res.json(result);
+      }).catch((err) => {
+        return next(err);
+      });
+  }
+  
 });
 
 app.use( (req, res) => {

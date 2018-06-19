@@ -70,6 +70,7 @@
       }
 
       onClear() {
+        console.log("clear");
         this.setState({curItem: {}});
       }
 
@@ -129,7 +130,7 @@
             items={this.state.items}
             show={this.showDetails.bind(this)}
           />
-          <ItemDetails item={this.state.curItem} change={this.onChange} save={this.onSave} reset={this.onClear} delete={this.onDelete} />
+          <ItemDetails item={this.state.curItem} change={this.onChange} save={this.onSave} clear={this.onClear} delete={this.onDelete} />
    				</div>
    			);
    		}
