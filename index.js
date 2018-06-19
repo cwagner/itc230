@@ -65,7 +65,7 @@ app.get('/api/item/:id', (req, res, next) => {
 });
 
 app.get('/api/item/delete/:id', (req, res, next) => {
-  gearMethods.delete(req.params.id, res).then((result) => {
+  gearMethods.delete(req.params.id).then((result) => {
     Gear.count((err, count) => {
       if (err) return next(err);
       res.json({deletedCount: result.n, items: count, id: req.params.id});
