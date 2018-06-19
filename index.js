@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const gearMethods = require('./lib/gearMethods');
 const Gear = require('./models/gear');
+const bodyParser = require("body-parser");
 
 let handlebars = require("express-handlebars");
 app.engine(".html", handlebars({extname: '.html'}));
@@ -10,8 +11,9 @@ app.set("view engine", ".html");
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public')); // set location for static files
-app.use(require("body-parser").urlencoded({extended: true})); // parse form submissions
+app.use(bodyParser.urlencoded({extended: true})); // parse form submissions
 app.use('/api', require('cors')());
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   gearMethods.getAll().then((items) => {
@@ -54,7 +56,7 @@ app.get('/api/gear', (req, res) => {
   });
 });
 
-app.get('/api/item/:id', (req, res) => {
+app.get('/api/item/:id', (req, res, next) => {
   gearMethods.get(req.params.id).then((item) => {
     res.json(item);
   }).catch((err) => {
@@ -62,7 +64,7 @@ app.get('/api/item/:id', (req, res) => {
   });
 });
 
-app.get('/api/item/delete/:id', (req, res) => {
+app.get('/api/item/delete/:id', (req, res, next) => {
   gearMethods.delete(req.params.id).then((result) => {
     Gear.count((err, count) => {
       if (err) return next(err);
@@ -73,12 +75,23 @@ app.get('/api/item/delete/:id', (req, res) => {
   });
 });
 
-app.post('/api/add', (req, res) => {
-  gearMethods.add(req.body).then((result) => {
+app.post('/api/add', (req, res, next) => {
+  if (!req.body._id) {
+    gearMethods.add({id:req.body.id, category:req.body.category, make:req.body.make, model:req.body.model, serialnumber:req.body.serialnumber}
+    ).then((result) => {
     res.json(result);
-  }).catch((err) => {
+    }).catch((err) => {
     return next(err);
   });
+  } else {
+    gearMethods.update(req.body._id, {id:req.body.id, category:req.body.category, make:req.body.make, model:req.body.model, serialnumber:req.body.serialnumber}
+      ).then((result) => {
+        res.json(result);
+      }).catch((err) => {
+        return next(err);
+      });
+  }
+  
 });
 
 app.use( (req, res) => {
